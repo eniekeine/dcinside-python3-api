@@ -110,6 +110,8 @@ class API:
             doc_content = parsed.xpath("//div[@class='thum-txtin']")[0]
             for adv in doc_content.xpath("div[@class='adv-groupin']"):
                 adv.getparent().remove(adv)
+            for adv in doc_content.xpath("div[@class='adv-groupno']"):
+                adv.getparent().remove(adv)
             for adv in doc_content.xpath("//img"):
                 if adv.get("src", "").startswith("https://nstatic") and not adv.get("data-original"):
                     adv.getparent().remove(adv)
