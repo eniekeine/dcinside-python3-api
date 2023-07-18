@@ -1,7 +1,7 @@
-from typing import Union, List
+from datetime import datetime
+from typing import Union, List, Callable
 from src.image import Image
 import datetime
-from asyncio import coroutine
 class Document:
     """
     게시글을 나타내는 클래스
@@ -27,8 +27,8 @@ class Document:
     """
     def __init__(
             self, 
-            id : int, 
-            board_id : int, 
+            id : str, 
+            board_id : str, 
             title : str, 
             author : str, 
             author_id : Union[None, str], 
@@ -39,8 +39,8 @@ class Document:
             voteup_count : int, 
             votedown_count : int, 
             logined_voteup_count : int, 
-            time : datetime.time, 
-            comments : List[coroutine], 
+            comments : Callable, 
+            time : datetime, 
             subject : Union[None, str] = None):
         self.id = id
         self.board_id = board_id
