@@ -54,11 +54,3 @@ run the following code:
 python test_dc_api.py
 ```
 
-## Issue
-
-very special case where document have empty title: <https://gall.dcinside.com/board/view/?id=programming&no=231191&page=1>
-this causes error in `API.document()` method
-```
- author = doc_head_container[1][0][0].text.strip()
-AttributeError: 'NoneType' object has no attribute 'strip'
-```

@@ -1,4 +1,6 @@
 # 프로그래밍 갤러리 글 무한 크롤링
+import sys
+sys.path.insert(0, 'C:/Dropbox/Notes/컴퓨터/스크립팅 언어/파이선/라이브러리/dcinside-python3-api/work')
 import asyncio
 import dc_api
 
