@@ -7,11 +7,16 @@ from src.document_index import DocumentIndex
 from src.comment import Comment
 from src.image import Image
 from src.header import Header
-from utils.helper_function import quote, unquote
-
+from utils.helper_function import quote, unquote, parse_time
+"""
+dcinside 웹을 파이선 코드로 사용하기 위한 API입니다.
+"""
 class API:
     def __init__(self):
-        self.session = aiohttp.ClientSession(headers=Header.GET_HEADERS, cookies={"_ga": "GA1.2.693521455.1588839880"})
+        self.session = aiohttp.ClientSession(
+            headers=Header.GET_HEADERS, 
+            cookies=Header.GOOGLE_ANALYTIC_COOKIES
+        )
     async def close(self):
         await self.session.close()
     async def __aenter__(self):
@@ -40,7 +45,7 @@ class API:
     async def board(self, board_id, num=-1, start_page=1, recommend=False, document_id_upper_limit=None, document_id_lower_limit=None, is_minor=False):
         page = start_page
         while num:
-            if recommend:
+            if recommend: # 개념글
                 url = "https://m.dcinside.com/board/{}?recommend=1&page={}".format(board_id, page)
             else:
                 url = "https://m.dcinside.com/board/{}?page={}".format(board_id, page)
@@ -55,13 +60,13 @@ class API:
                 if len(doc[0][1]) == 5:
                     subject = doc[0][1][0].text
                     author = doc[0][1][1].text
-                    time= self.__parse_time(doc[0][1][2].text)
+                    time= parse_time(doc[0][1][2].text)
                     view_count= int(doc[0][1][3].text.split()[-1])
                     voteup_count= int(doc[0][1][4][0].text.split()[-1])
                 else:
                     subject = None
                     author = doc[0][1][0].text
-                    time= self.__parse_time(doc[0][1][1].text)
+                    time= parse_time(doc[0][1][1].text)
                     view_count= int(doc[0][1][2].text.split()[-1])
                     voteup_count= int(doc[0][1][3].text_content().split()[-1])
                 if "sp-lst-img" in doc[0][0][0].get("class"):
@@ -136,7 +141,7 @@ class API:
                     votedown_count= int(parsed.xpath("//span[@id='nonrecomm_btn']")[0].text.strip()),
                     logined_voteup_count= int(parsed.xpath("//span[@id='recomm_btn_member']")[0].text.strip()),
                     comments= lambda: self.comments(board_id, document_id),
-                    time= self.__parse_time(time)
+                    time= parse_time(time)
                     )
         else:
             # fail due to unusual tags in mobile version
@@ -167,7 +172,7 @@ class API:
                     contents= '\n'.join(i.strip() for i in li[1].itertext()),
                     dccon= li[1][0].get("data-original", li[1][0].get("src", None)) if len(li[1]) and li[1][0].tag=="img" else None,
                     voice= li[1][0].get("src", None) if len(li[1]) and li[1][0].tag=="iframe" else None,
-                    time= self.__parse_time(li[2].text))
+                    time= parse_time(li[2].text))
                 num -= 1
                 if num == 0:
                     return
@@ -406,25 +411,3 @@ class API:
         headers["X-CSRF-TOKEN"] = csrf_token
         async with self.session.post(url, headers=headers, data=payload) as res:
             return (await res.json())["Block_key"]
-    def __parse_time(self, time): 
-        today = datetime.now() 
-        if len(time) <= 5: 
-            if time.find(":") > 0:
-                return datetime.strptime(time, "%H:%M").replace(year=today.year, month=today.month, day=today.day)
-            else:
-                return datetime.strptime(time, "%m.%d").replace(year=today.year, hour=23, minute=59, second=59)
-        elif len(time) <= 11:
-            if time.find(":") > 0:
-                return datetime.strptime(time, "%m.%d %H:%M").replace(year=today.year)
-            else:
-                return datetime.strptime(time, "%y.%m.%d").replace(year=today.year, hour=23, minute=59, second=59)
-        elif len(time) <= 16:
-            if time.count(".") >= 2:
-                return datetime.strptime(time, "%Y.%m.%d %H:%M")
-            else:
-                return datetime.strptime(time, "%m.%d %H:%M:%S").replace(year=today.year)
-        else:
-            if "." in time:
-                return datetime.strptime(time, "%Y.%m.%d %H:%M:%S")
-            else:
-                return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
