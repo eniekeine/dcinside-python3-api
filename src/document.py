@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 from src.image import Image
 import datetime
 from asyncio import coroutine
@@ -33,14 +33,14 @@ class Document:
             author : str, 
             author_id : Union[None, str], 
             contents : str, 
-            images : list[Image], 
+            images : List[Image], 
             html : str, 
             view_count : int, 
             voteup_count : int, 
             votedown_count : int, 
             logined_voteup_count : int, 
             time : datetime.time, 
-            comments : list[coroutine], 
+            comments : List[coroutine], 
             subject : Union[None, str] = None):
         self.id = id
         self.board_id = board_id
