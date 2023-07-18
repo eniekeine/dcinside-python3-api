@@ -11,6 +11,6 @@ async def run():
         for img in doc.images:
           img.download('./img')       # => ./img.gif
         async for comm in index.comments():
-            print(com.contents)       # => ㅇㅇ(1.224) 지랄 ㄴ
+            print(comm.contents)       # => ㅇㅇ(1.224) 지랄 ㄴ
 
 asyncio.run(run())
