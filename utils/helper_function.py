@@ -66,7 +66,7 @@ def peek(iterable):
     return first, itertools.chain((first,), iterable)
 def parse_time(time): 
         """
-        시간을 나타내는 문자열을 파싱하여 datetime.time 객체로 변환한다.
+        시간을 나타내는 문자열을 파싱하여 datetime 객체로 변환한다.
 
         Args:
             time (str): 8 가지 형식의 날짜 문자열을 파싱할 수 있다.
@@ -81,7 +81,7 @@ def parse_time(time):
             문자열에서 누락된 정보는 현재 날짜와 시간으로 대체된다.
 
         Returns:
-            datetime.time: 입력된 문자열을 파싱한 결과 얻은 시간을 나타내는 객체.
+            datetime: 입력된 문자열을 파싱한 결과 얻은 시간을 나타내는 객체.
         """
         today = datetime.now()
         if len(time) <= 5: 
