@@ -109,6 +109,8 @@ class API:
         doc_head_container = doc_head_containers[0]
         if len(doc_content_container):
             title = " ".join(doc_head_container[0].text.strip().split())
+            if len(title) == 0: # 제목이 비어있는 경우 파싱을 포기합니다. <https://gall.dcinside.com/board/view/?id=programming&no=231191&page=1>
+                return None
             author = doc_head_container[1][0][0].text.strip()
             author_id = None if len(doc_head_container[1]) <= 1 else doc_head_container[1][1][0].get("href").split("/")[-1]
             time = doc_head_container[1][0][1].text.strip()
