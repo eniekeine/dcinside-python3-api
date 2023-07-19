@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Union, List, Callable
-from src.image import Image
+from .image import Image
 import datetime
 class Document:
     """

@@ -1,5 +1,5 @@
 import filetype
-from src.header import Header
+from .header import Header
 class Image:
     __slots__ = ["src", "document_id", "board_id", "session"]
     def __init__(self, src, document_id, board_id, session):

@@ -1,13 +1,12 @@
 import json
 import lxml.html
-from datetime import datetime
 import aiohttp
-from src.document import Document
-from src.document_index import DocumentIndex
-from src.comment import Comment
-from src.image import Image
-from src.header import Header
-from utils.helper_function import quote, unquote, parse_time
+from .src.document import Document
+from .src.document_index import DocumentIndex
+from .src.comment import Comment
+from .src.image import Image
+from .src.header import Header
+from .utils.helper_function import quote, unquote, parse_time
 """
 dcinside 웹을 파이선 코드로 사용하기 위한 API입니다.
 """
